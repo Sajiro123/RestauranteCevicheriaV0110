@@ -492,7 +492,7 @@ export class HomeComponent {
         }));
 
         // 2️⃣ Ejecutamos la transacción completa (pedido + detalles)
-        const { data, error } = await this.supabaseService.editarPedidoCompleto(pedido, detalles);
+        const { data, error } = await this.PedidoService.editarPedidoCompleto(pedido, detalles);
 
         if (error || !data?.success) {
             throw new Error(data?.error || error?.message || 'Error al editar pedido');
