@@ -13,6 +13,15 @@ export class PedidoService {
         return from(this.supabaseService.deletePedido(id, motivo, responsable));
     }
 
+  
+  async editarPedidoCompleto(pedido: any, detalles: any[]): Promise<{ data: any; error: any }> {
+    const { data, error } = await this.supabase.rpc('editar_pedido_y_detalles', {
+        pedido,
+        detalles
+    });
+    return { data, error };
+}
+
     CobrarPedido(productos: Pedido): Observable<any> {
         const now = new Date();
         const fechaPeru = now.toLocaleDateString('en-CA', {
