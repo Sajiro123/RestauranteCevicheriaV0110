@@ -485,9 +485,9 @@ export class HomeComponent {
                         const detallesObservables = this.NuevoPedido.pedidodetalle.map((element) => {
                             element.idpedido = this.NuevoPedido.idpedido;
                             element.id_created_at = 0;
-                            return this.PedidoService.insertPedidoDetalle(element);
                         });
 
+                 return this.PedidoService.insertarPedidoConDetalles(detallesObservables);     
                         // Usamos forkJoin para esperar a que TODOS los detalles se completen
                         return forkJoin(detallesObservables);
                     })
