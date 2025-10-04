@@ -104,14 +104,6 @@ export class SupabaseService {
 
   
 
-  async editarPedidoCompleto(pedido: any, detalles: any[]): Promise<{ data: any; error: any }> {
-    const { data, error } = await this.supabase.rpc('editar_pedido_y_detalles', {
-        pedido,
-        detalles
-    });
-    return { data, error };
-}
-
   
     async insertPedidoDetalle(detalleData: any) {
         const { data, error } = await this.supabase.from('pedidodetalle').insert(detalleData).select();
