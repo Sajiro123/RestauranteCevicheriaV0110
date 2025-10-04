@@ -485,6 +485,7 @@ export class HomeComponent {
     try {
         // 1️⃣ Preparamos los datos
         const pedido = this.NuevoPedido;
+        this.nuevoPedido.comentario= this.comentarios;
         const detalles = this.NuevoPedido.pedidodetalle.map((element) => ({
             ...element,
             idpedido: pedido.idpedido,
