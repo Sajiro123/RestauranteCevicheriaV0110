@@ -477,47 +477,52 @@ export class HomeComponent {
     }
 
     async EditarPedido() {
-        if (this.mesaSeleccionada) {
-            (await this.PedidoService.EditarPedido(this.NuevoPedido, this.comentarios))
-                .pipe(
-                    switchMap((pedidoResponse: any) => {
-                        // Creamos un array de observables para los detalles
-                        const detallesObservables = this.NuevoPedido.pedidodetalle.map((element) => {
-                            element.idpedido = this.NuevoPedido.idpedido;
-                            element.id_created_at = 0;
-                        });
-
-                        // Usamos forkJoin para esperar a que TODOS los detalles se completen
-                        return forkJoin(detallesObservables);
-                    })
-                )
-                .subscribe({
-                    next: () => {
-                        this.cargarMesas();
-                        if (this.mesaSeleccionada) {
-                            this.seleccionarMesa(this.mesaSeleccionada);
-                        }
-                        this.messageService.add({
-                            severity: 'success',
-                            summary: 'Successful',
-                            detail: 'Pedido Modificado correctamente',
-                            life: 3000
-                        });
-                    },
-                    error: (error) => {
-                        console.error('Error en el proceso completo:', error);
-                        this.messageService.add({
-                            severity: 'error',
-                            summary: 'Error',
-                            detail: 'Ocurrió un error al registrar el pedido',
-                            life: 3000
-                        });
-                    }
-                });
-        } else {
-            alert('Seleccione una mesa para crear el pedido');
-        }
+    if (!this.mesaSeleccionada) {
+        alert('Seleccione una mesa para crear el pedido');
+        return;
     }
+
+    try {
+        // 1️⃣ Preparamos los datos
+        const pedido = this.NuevoPedido;
+        const detalles = this.NuevoPedido.pedidodetalle.map((element) => ({
+            ...element,
+            idpedido: pedido.idpedido,
+            id_created_at: 0
+        }));
+
+        // 2️⃣ Ejecutamos la transacción completa (pedido + detalles)
+        const { data, error } = await this.PedidoService.editarPedidoCompleto(pedido, detalles);
+
+        if (error || !data?.success) {
+            throw new Error(data?.error || error?.message || 'Error al editar pedido');
+        }
+
+        // 3️⃣ Refrescamos las mesas y mostramos mensaje
+        await this.cargarMesas();
+        if (this.mesaSeleccionada) {
+            this.seleccionarMesa(this.mesaSeleccionada);
+        }
+
+        this.messageService.add({
+            severity: 'success',
+            summary: 'Successful',
+            detail: 'Pedido modificado correctamente',
+            life: 3000
+        });
+
+    } catch (error) {
+        console.error('Error en el proceso completo:', error);
+
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Ocurrió un error al modificar el pedido. No se aplicaron los cambios.',
+            life: 3000
+        });
+    }
+}
+
 
     trashPedido(pedido: NuevoPedidodetalle) {
         const index = this.NuevoPedido.pedidodetalle.indexOf(pedido);
