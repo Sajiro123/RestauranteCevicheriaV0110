@@ -102,21 +102,14 @@ export class SupabaseService {
     }
 
 
-  async insertarPedidoConDetalles(pedido: any, detalles: any[]) {
-    try {
-        const { data, error } = await this.supabase
-            .rpc('insertar_pedido_con_detalles', {
-                pedido: pedido,
-                detalles: detalles
-            });
+  
 
-        if (error) throw error;
-
-        return { success: true, data };
-    } catch (error) {
-        console.error('Error en la transacción:', error);
-        return { success: false, error };
-    }
+  async editarPedidoCompleto(pedido, detalles) {
+    const { data, error } = await this.supabase.rpc('editar_pedido_y_detalles', {
+        pedido,
+        detalles
+    });
+    return { data, error };
 }
 
   
