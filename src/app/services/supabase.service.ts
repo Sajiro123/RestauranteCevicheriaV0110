@@ -101,6 +101,25 @@ export class SupabaseService {
         return { success: !error, data, error };
     }
 
+
+  async insertarPedidoConDetalles(pedido: any, detalles: any[]) {
+    try {
+        const { data, error } = await this.supabase
+            .rpc('insertar_pedido_con_detalles', {
+                pedido: pedido,
+                detalles: detalles
+            });
+
+        if (error) throw error;
+
+        return { success: true, data };
+    } catch (error) {
+        console.error('Error en la transacción:', error);
+        return { success: false, error };
+    }
+}
+
+  
     async insertPedidoDetalle(detalleData: any) {
         const { data, error } = await this.supabase.from('pedidodetalle').insert(detalleData).select();
 
