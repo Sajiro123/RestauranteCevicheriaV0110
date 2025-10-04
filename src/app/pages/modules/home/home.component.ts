@@ -487,7 +487,6 @@ export class HomeComponent {
                             element.id_created_at = 0;
                         });
 
-                 return this.PedidoService.insertarPedidoConDetalles(detallesObservables);     
                         // Usamos forkJoin para esperar a que TODOS los detalles se completen
                         return forkJoin(detallesObservables);
                     })
