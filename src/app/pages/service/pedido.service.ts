@@ -14,13 +14,14 @@ export class PedidoService {
     }
 
   
-  async editarPedidoCompleto(pedido: any, detalles: any[]): Promise<{ data: any; error: any }> {
-    const { data, error } = await this.supabaseService.client.rpc('editar_pedido_y_detalles', {
-        pedido,
-        detalles
+ async editarPedidoCompleto(pedido: any, detalles: any[]) {
+    const { data, error } = await this.supabase.rpc('editar_pedido_y_detalles', {
+        pedido_data: pedido, // 👈 este nombre debe coincidir con el de la función SQL
+        detalles: detalles
     });
     return { data, error };
 }
+
 
     CobrarPedido(productos: Pedido): Observable<any> {
         const now = new Date();
