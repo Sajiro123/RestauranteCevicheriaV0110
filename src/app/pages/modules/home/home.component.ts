@@ -490,7 +490,7 @@ export class HomeComponent {
         const detalles = this.NuevoPedido.pedidodetalle.map((element) => ({
             ...element,
             idpedido: pedido.idpedido,
-            id_created_at: 0
+            id_created_at: 1,
         }));
 
         // 2️⃣ Ejecutamos la transacción completa (pedido + detalles)
