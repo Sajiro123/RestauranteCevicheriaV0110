@@ -484,6 +484,7 @@ export class HomeComponent {
 
     try {
         // 1️⃣ Preparamos los datos
+      debugger
         const pedido = this.NuevoPedido;
         this.NuevoPedido.comentario= this.comentarios;
         const detalles = this.NuevoPedido.pedidodetalle.map((element) => ({
