@@ -15,7 +15,7 @@ export class PedidoService {
 
   
  async editarPedidoCompleto(pedido: any, detalles: any[]) {
-    const { data, error } = await this.supabase.rpc('editar_pedido_y_detalles', {
+    const { data, error } = await this.supabaseService.client.rpc('editar_pedido_y_detalles', {
         pedido_data: pedido, // 👈 este nombre debe coincidir con el de la función SQL
         detalles: detalles
     });
