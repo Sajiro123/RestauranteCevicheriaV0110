@@ -663,6 +663,7 @@ export class HomeComponent {
     }
 
     editar(mesa: Mesa, pedido: NuevoPedido): void {
+      debugger
         this.buscarPlato = '';
         this.pedido_mesa_status = false;
         if (mesa.numero == '0') {
